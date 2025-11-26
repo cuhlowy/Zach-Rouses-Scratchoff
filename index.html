@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <title>Living Typography</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <meta name="description" content="Interactive jungle typographic experience" />
+      <link rel="stylesheet" href="css/normalize.css" />
+      <link rel="stylesheet" href="css/main.css" />
+      <script src="js/main.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+   </head>
+   <body>
+      <img id="tiger-paw" src="img/tiger.png" alt="Tiger Paw clawing from left" />
+      <img id="jungle-bird" src="img/bird.png" alt="Bird slides in from right" />
+      <img id="jungle-snake" src="img/snake.png" alt="Snake slides in from left" />
+      <audio id="bg-audio" autoplay loop muted>
+         <source src="audio/nature-soundstropicaljunglebirds-108380.mp3" type="audio/mpeg">
+      </audio>
+      <section class="jungle-section">
+         <h1 id="wild" aria-label="Wild jungle title">WILD</h1>
+         <h2 class="description">Scroll through the jungle of words.</h2>
+      </section>
+      <section class="jungle-section">
+         <div class="animal-word" role="button" tabindex="0" aria-label="Tiger roar sound and animation" data-sound="audio/tiger-roar-loudly-193229.mp3">ROAR</div>
+         <div class="animal-word" role="button" tabindex="0" aria-label="Bird chirping sound and animation" data-sound="audio/bird_chirp.mp3">CHIRP</div>
+         <div class="animal-word" role="button" tabindex="0" aria-label="Snake hissing sound and animation" data-sound="audio/snake_rattle.mp3">HISS</div>
+      </section>
+      <audio id="sound-player"></audio>
+      <audio id="leaf-sound" src="audio/rustling.mp3"></audio>
+   </body>
+</html>
