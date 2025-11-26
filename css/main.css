@@ -51,24 +51,11 @@ body {
 	position: absolute;
 	inset: 0;
 	cursor: pointer;
-  
-	/* OPTION 1: built-in scratchy gradient */
-	background:
-	  radial-gradient(circle at 10px 10px, #f0f0f0 0, #f0f0f0 5px, #c4c4c4 6px, #c4c4c4 100%),
-	  repeating-linear-gradient(
-		45deg,
-		#d3d3d3 0,
-		#d3d3d3 4px,
-		#bdbdbd 4px,
-		#bdbdbd 8px
-	  );
-	background-size: 40px 40px, 30px 30px;
-	background-blend-mode: multiply;
-  
-	/* OPTION 2: use your own overlay image texture instead of gradient:
-	   background: url("scratch-overlay.png") center/cover no-repeat;
-	*/
-  }
+	/* IMPORTANT: no background here – overlay is transparent.
+	   The tiles will provide the scratch texture. */
+	background: transparent;
+}
+
   
   /* Grid of tiles that animate away */
   .scratch-tile-grid {
@@ -82,11 +69,24 @@ body {
   
   /* Each tile is a piece of the overlay */
   .scratch-tile {
-	background: inherit; /* uses .scratch-overlay background */
+	/* scratch texture lives on each tile now */
+	background:
+	  radial-gradient(circle at 10px 10px, #f0f0f0 0, #f0f0f0 5px, #c4c4c4 6px, #c4c4c4 100%),
+	  repeating-linear-gradient(
+		45deg,
+		#d3d3d3 0,
+		#d3d3d3 4px,
+		#bdbdbd 4px,
+		#bdbdbd 8px
+	  );
+	background-size: 40px 40px, 30px 30px;
+	background-blend-mode: multiply;
+
 	border: 1px solid rgba(255, 255, 255, 0.04);
 	animation: scratch-erase 0.6s forwards;
 	animation-play-state: paused; /* only run after click */
-  }
+}
+
   
   /* Text above the overlay */
   .scratch-label-text {
