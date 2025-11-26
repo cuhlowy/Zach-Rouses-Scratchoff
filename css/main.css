@@ -1,361 +1,137 @@
+/* ===== Basic page layout (optional; tweak or merge with your own) ===== */
+
 body {
 	margin: 0;
-	padding: 0;
-	font-family: Arial, sans-serif;
-	font-size: 30px;
-	background: url('../img/jungle_background.png') center/cover no-repeat fixed;
-	color: white;
-}
-
-body::before {
-	content: '';
-	position: fixed;
-	inset: 0;
-	background: rgba(0, 0, 0, 0.8);
-	z-index: -1;
-}
-
-.description {
-	font-size: clamp(16px, 4vw, 28px);
-	margin-top: 12px;
-	line-height: 1.4;
-	max-width: 80%;
-}
-
-@media (max-width: 758px) {
-	.description {
-		font-size: 14px;
-		max-width: 90%;
-	}
-}
-
-
-.jungle-section {
-	height: 100vh;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+	background: radial-gradient(circle at top, #27293d, #111);
+	color: #f5f5f5;
+	min-height: 100vh;
 	display: flex;
-	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+  }
+  
+  .scratch-wrapper {
 	text-align: center;
-	padding: 32px;
+  }
+  
+  .title {
+	margin-bottom: 1.5rem;
+	font-size: 1.8rem;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+  }
+  
+  /* ===== Scratch card core ===== */
+  
+  .scratch-card {
 	position: relative;
+	width: 360px;    /* adjust to match your ticket artwork */
+	height: 220px;   /* adjust to match your ticket artwork */
+	border-radius: 20px;
 	overflow: hidden;
-}
-
-.animal-word {
-	font-size: 50px;
-	margin: 16px;
+	box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+  }
+  
+  /* Background image (your ticket artwork) */
+  .scratch-prize {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+  }
+  
+  /* Hidden checkbox to store "clicked" state */
+  .scratch-toggle {
+	display: none;
+  }
+  
+  /* The overlay that gets "erased" */
+  .scratch-overlay {
+	position: absolute;
+	inset: 0;
 	cursor: pointer;
-	transition: transform 0.3s, color 0.3s;
-}
-
-.animal-word:hover {
-	transform: scale(1.3);
-	color: limegreen;
-}
-
-.slide-in-leaf {
-	position: fixed;
-	width: clamp(900px, 25vw, 1000px);
-	height: auto;
-	top: 0;
-	z-index: 9999;
+  
+	/* OPTION 1: built-in scratchy gradient */
+	background:
+	  radial-gradient(circle at 10px 10px, #f0f0f0 0, #f0f0f0 5px, #c4c4c4 6px, #c4c4c4 100%),
+	  repeating-linear-gradient(
+		45deg,
+		#d3d3d3 0,
+		#d3d3d3 4px,
+		#bdbdbd 4px,
+		#bdbdbd 8px
+	  );
+	background-size: 40px 40px, 30px 30px;
+	background-blend-mode: multiply;
+  
+	/* OPTION 2: use your own overlay image texture instead of gradient:
+	   background: url("scratch-overlay.png") center/cover no-repeat;
+	*/
+  }
+  
+  /* Grid of tiles that animate away */
+  .scratch-tile-grid {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	grid-template-columns: repeat(10, 1fr); /* 10 columns */
+	grid-template-rows: repeat(6, 1fr);    /* 6 rows  */
+	pointer-events: none; /* clicks pass through to the label */
+  }
+  
+  /* Each tile is a piece of the overlay */
+  .scratch-tile {
+	background: inherit; /* uses .scratch-overlay background */
+	border: 1px solid rgba(255, 255, 255, 0.04);
+	animation: scratch-erase 0.6s forwards;
+	animation-play-state: paused; /* only run after click */
+  }
+  
+  /* Text above the overlay */
+  .scratch-label-text {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 800;
+	font-size: 0.9rem;
+	letter-spacing: 0.25em;
+	text-transform: uppercase;
+	color: #333;
+	text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
+	mix-blend-mode: multiply;
 	pointer-events: none;
-}
-
-@media (max-width: 900px) {
-	.slide-in-leaf {
-		width: clamp(600px, 50vw, 800px);
-	}
-}
-
-
-.slide-in-leaf.right {
-	right: 0;
-	animation: slideFromRight 1s ease forwards;
-}
-
-.slide-in-leaf.left {
-	left: 0;
-	transform: scaleX(-1);
-	animation: slideFromLeft 1s ease forwards;
-}
-
-@keyframes slideFromRight {
+  }
+  
+  /* ===== Animation ===== */
+  
+  @keyframes scratch-erase {
 	0% {
-		transform: translateX(100%);
-		opacity: 0;
+	  opacity: 1;
+	  transform: scale(1) translateY(0);
 	}
-
 	100% {
-		transform: translateX(0);
-		opacity: 1;
+	  opacity: 0;
+	  transform: scale(1.2) translateY(-10px);
 	}
-}
-
-@keyframes slideFromLeft {
-	0% {
-		transform: translateX(-100%) scaleX(-1);
-		opacity: 0;
-	}
-
-	100% {
-		transform: translateX(0) scaleX(-1);
-		opacity: 1;
-	}
-}
-
-
-#tiger-paw,
-#jungle-bird,
-#jungle-snake {
-	width: clamp(280px, 25vw, 380px);
-}
-
-
-/* Tiger */
-#tiger-paw {
-	position: fixed;
-	top: 50%;
-	left: -300px;
-	/* width: 300px; */
-	transform: translateY(-50%);
-	z-index: 100;
-	pointer-events: none;
-	opacity: 0;
-}
-
-@keyframes swipeLeft {
-	0% {
-		left: -300px;
-		opacity: 0;
-		transform: rotate(20deg) translateY(-50%);
-	}
-
-	30%,
-	90% {
-		left: 120px;
-		opacity: 1;
-		transform: rotate(0deg) translateY(-50%);
-	}
-
-	50% {
-		transform: rotate(0deg) translateY(-45%);
-	}
-
-	70% {
-		transform: rotate(0deg) translateY(-55%);
-	}
-
-	100% {
-		left: -300px;
-		opacity: 0;
-		transform: rotate(20deg) translateY(-50%);
-	}
-}
-
-
-/* Bird */
-#jungle-bird {
-	position: fixed;
-	top: 30%;
-	right: -300px;
-	/* width: 300px; */
-	transform: scaleX(-1);
-	z-index: 200;
-	pointer-events: none;
-	opacity: 0;
-}
-
-@keyframes birdFlyLeft {
-	0% {
-		right: -300px;
-		opacity: 0;
-		transform: scaleX(-1) rotate(10deg);
-	}
-
-	30% {
-		right: 120px;
-		opacity: 1;
-		transform: scaleX(-1) rotate(0deg);
-	}
-
-	70% {
-		right: 120px;
-		opacity: 1;
-		transform: scaleX(-1) rotate(-5deg);
-	}
-
-	100% {
-		right: -300px;
-		opacity: 0;
-		transform: scaleX(-1) rotate(0deg);
-	}
-}
-
-
-/* Snake */
-#jungle-snake {
-	position: fixed;
-	top: 60%;
-	left: -300px;
-	/* width: 300px; */
-	z-index: 200;
-	pointer-events: none;
-	opacity: 0;
-}
-
-@keyframes snakeSlideLeft {
-	0% {
-		left: -300px;
-		opacity: 0;
-		transform: rotate(-5deg);
-	}
-
-	30% {
-		left: 120px;
-		opacity: 1;
-		transform: rotate(0deg);
-	}
-
-	70% {
-		left: 120px;
-		opacity: 1;
-		transform: rotate(5deg);
-	}
-
-	100% {
-		left: -300px;
-		opacity: 0;
-		transform: rotate(0deg);
-	}
-}
-
-
-@media (max-width:600px) {
-	#wild {
-		font-size: clamp(20px, 15vw, 80px);
-	}
-
-	.description {
-		font-size: clamp(8px, 15vw, 15px);
-	}
-
-	.animal-word {
-		font-size: clamp(20px, 10vw, 30px);
-	}
-
-	/* #tiger-paw, #jungle-snake, #jungle-bird {
-        width: clamp(100px, 35vw, 150px);
-      } */
-
-}
-
-@media (max-width: 480px) {
-
-	#tiger-paw,
-	#jungle-bird,
-	#jungle-snake {
-		width: 150px;
-	}
-}
-
-@media (max-width: 768px) {
-
-	#tiger-paw,
-	#jungle-bird,
-	#jungle-snake {
-		width: 200px;
-	}
-}
-
-
-@media (max-width: 600px) {
-	/* #tiger-paw,
-    #jungle-bird,
-    #jungle-snake {
-      width: clamp(100px, 20vw, 200px);
-    } */
-
-	@keyframes swipeLeft {
-		0% {
-			left: -300px;
-			opacity: 0;
-			transform: rotate(20deg) translateY(-50%);
-		}
-
-		30%,
-		90% {
-			left: 10px;
-			/* subtle entrance */
-			opacity: 1;
-			transform: rotate(0deg) translateY(-50%);
-		}
-
-		50% {
-			transform: rotate(0deg) translateY(-45%);
-		}
-
-		70% {
-			transform: rotate(0deg) translateY(-55%);
-		}
-
-		100% {
-			left: -300px;
-			opacity: 0;
-			transform: rotate(20deg) translateY(-50%);
-		}
-	}
-
-	@keyframes birdFlyLeft {
-		0% {
-			right: -300px;
-			opacity: 0;
-			transform: scaleX(-1) rotate(10deg);
-		}
-
-		30% {
-			right: 10px;
-			opacity: 1;
-			transform: scaleX(-1) rotate(0deg);
-		}
-
-		70% {
-			right: 10px;
-			opacity: 1;
-			transform: scaleX(-1) rotate(-5deg);
-		}
-
-		100% {
-			right: -300px;
-			opacity: 0;
-			transform: scaleX(-1) rotate(0deg);
-		}
-	}
-
-	@keyframes snakeSlideLeft {
-		0% {
-			left: -300px;
-			opacity: 0;
-			transform: rotate(-5deg);
-		}
-
-		30% {
-			left: 10px;
-			opacity: 1;
-			transform: rotate(0deg);
-		}
-
-		70% {
-			left: 10px;
-			opacity: 1;
-			transform: rotate(5deg);
-		}
-
-		100% {
-			left: -300px;
-			opacity: 0;
-			transform: rotate(0deg);
-		}
-	}
-}
+  }
+  
+  /* When the checkbox is checked (clicked), run the erase animation on tiles */
+  .scratch-toggle:checked + .scratch-overlay .scratch-tile {
+	animation-play-state: running;
+  }
+  
+  /* Staggered delays to give an "array" erasing feel */
+  .scratch-tile:nth-child(10n + 1)  { animation-delay: 0.00s; }
+  .scratch-tile:nth-child(10n + 2)  { animation-delay: 0.03s; }
+  .scratch-tile:nth-child(10n + 3)  { animation-delay: 0.06s; }
+  .scratch-tile:nth-child(10n + 4)  { animation-delay: 0.09s; }
+  .scratch-tile:nth-child(10n + 5)  { animation-delay: 0.12s; }
+  .scratch-tile:nth-child(10n + 6)  { animation-delay: 0.15s; }
+  .scratch-tile:nth-child(10n + 7)  { animation-delay: 0.18s; }
+  .scratch-tile:nth-child(10n + 8)  { animation-delay: 0.21s; }
+  .scratch-tile:nth-child(10n + 9)  { animation-delay: 0.24s; }
+  .scratch-tile:nth-child(10n + 10) { animation-delay: 0.27s; }
+  
