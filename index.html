@@ -2,15 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Rotated Portrait Scratchoff</title>
+  <title>Tailgate Scratchoff</title>
   <link rel="stylesheet" href="main.css" />
 </head>
 <body>
 
   <div class="portrait-container">
-    <img class="portrait-image" src="img/FootballBackground.jpg" alt="">
+    <!-- Rotated football field background -->
+    <img src="img/FootballBackground.jpg" class="portrait-image" alt="Football field">
+
+    <!-- Hidden toggle to store the scratched state -->
+    <input type="checkbox" id="scratch-toggle" class="scratch-toggle">
+
+    <!-- OVERLAY PNG (click this to erase) -->
+    <label for="scratch-toggle" class="scratch-overlay">
+      <!-- Your Overlay.png, rotated just like the field -->
+      <img src="img/Overlay.png" class="overlay-img" alt="Scratch area">
+    </label>
+
+    <div class="congrats-banner">
+      Congratulations! You won 20% off your next purchase!
+    </div>
+
+    <!-- NEW: Confetti lives inside the card -->
+    <div class="confetti-container"></div>
   </div>
 
+  <!-- NEW: Confetti script for THIS page -->
+  
+    <script src="main.js"></script>
 </body>
 </html>
-
