@@ -51,6 +51,7 @@ body {
 	aspect-ratio: 1/1; /* keep it square; your PNG has black rect + circle */
 	cursor: pointer;
 	display: block;
+	
   }
   
   /* The overlay PNG itself, rotated like the field */
